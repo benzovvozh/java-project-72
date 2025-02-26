@@ -40,7 +40,10 @@ public class App {
         var sql = readResourceFile("urls.sql");
 
         log.info(sql);
-
+        try (var conn = dataSource.getConnection();
+             var statement = conn.createStatement()) {
+            statement.execute(sql);
+        }
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
             config.fileRenderer(new JavalinJte());
