@@ -20,7 +20,7 @@ public class App {
             config.fileRenderer(new JavalinJte());
         });
         app.get("/", ctx -> {
-            ctx.result("Hello World");
+            ctx.result("Dear wife, i love u so much");
         });
 
         return app;
