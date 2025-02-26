@@ -1,9 +1,20 @@
-FROM gradle:7.4.0-jdk17
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY /app .
+COPY app/gradle gradle
+COPY app/build.gradle.kts .
+COPY app/settings.gradle.kts .
+COPY app/gradlew .
 
-RUN gradle shadowJar
+RUN ./gradlew --no-daemon dependencies
 
-CMD ./build/install/app/bin/app
+COPY app/src src
+COPY app/config config
+
+RUN ./gradlew --no-daemon build
+
+ENV JAVA_OPTS "-Xmx512M -Xms512M"
+EXPOSE 7070
+
+CMD java -jar build/libs/app-1.0-SNAPSHOT-all.jar
