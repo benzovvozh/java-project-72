@@ -1,4 +1,7 @@
 @import gg.jte.Content
+@import hexlet.code.util.NamedRoutes
+@import hexlet.code.dto.*
+@param BasePage page = null
 @param Content content
 
 <!doctype html>
