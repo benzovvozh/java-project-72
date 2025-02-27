@@ -2,6 +2,12 @@ package hexlet.code;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import gg.jte.ContentType;
+import gg.jte.TemplateEngine;
+import gg.jte.TemplateOutput;
+import gg.jte.output.StringOutput;
+import gg.jte.resolve.ResourceCodeResolver;
+import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +39,13 @@ public class App {
         return url;
     }
 
+    private static TemplateEngine createTemplateEngine() {
+        ClassLoader classLoader = App.class.getClassLoader();
+        ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
+        TemplateEngine templateEngine = TemplateEngine.create(codeResolver, ContentType.Html);
+        return templateEngine;
+    }
+
     public static Javalin getApp() throws IOException, SQLException {
         var hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(getDBurl());
@@ -46,10 +59,11 @@ public class App {
         }
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
-            config.fileRenderer(new JavalinJte());
+            config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
-        app.get("/", ctx -> {
-            ctx.result("Dear wife, i love u so much");
+        app.get(NamedRoutes.mainPath(), ctx -> {
+            TemplateOutput output = new StringOutput();
+            ctx.render("index.jte");
         });
 
         return app;
