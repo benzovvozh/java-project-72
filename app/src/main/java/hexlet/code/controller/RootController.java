@@ -28,7 +28,7 @@ public class RootController {
             String stringBuilder = new StringBuilder(protocol)
                     .append("://").append(host).append((port == -1) ? "" : ":" + port).toString();
             Url result = new Url(stringBuilder);
-                if (!UrlRepository.findMatchesByName(stringBuilder)) {
+            if (!UrlRepository.findMatchesByName(stringBuilder)) {
                 ctx.sessionAttribute("flash", "Страница уже существует");
                 ctx.redirect(NamedRoutes.urlsPath());
             } else {
