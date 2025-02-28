@@ -23,13 +23,21 @@ public class RootController {
         try {
             var url = new URI(url1).toURL();
             var protocol = url.getProtocol();
-            var port = String.valueOf(url.getPort());
+            var port = url.getPort();
             var host = url.getHost();
-            String resultString = protocol + host + ((port != null) ? port : "");
-            Url result = new Url(resultString);
-            UrlRepository.save(result);
-            ctx.redirect(NamedRoutes.urlsPath());
+            String stringBuilder = new StringBuilder(protocol)
+                    .append("://").append(host).append((port == -1) ? "" : ":" + port).toString();
+            Url result = new Url(stringBuilder);
+                if (!UrlRepository.findMatchesByName(stringBuilder)) {
+                ctx.sessionAttribute("flash", "Страница уже существует");
+                ctx.redirect(NamedRoutes.urlsPath());
+            } else {
+                UrlRepository.save(result);
+                ctx.sessionAttribute("flash", "Страница успешно добавлена");
+                ctx.redirect(NamedRoutes.urlsPath());
+            }
         } catch (MalformedURLException e) {
+            ctx.sessionAttribute("flash", "Некорректный Url");
             throw new RuntimeException("Некорректный URL");
         } catch (URISyntaxException e) {
             throw new RuntimeException("Некорректный URL");
@@ -37,9 +45,11 @@ public class RootController {
             throw new RuntimeException("Чето со временем");
         }
     }
+
     public static void showURLS(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
         var page = new UrlsPage(urls);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("urls.jte", model("page", page));
     }
 }

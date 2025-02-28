@@ -1,12 +1,14 @@
 package hexlet.code.repository;
 
 import hexlet.code.model.Url;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 public class UrlRepository extends BaseRepository {
     public static void save(Url url) throws SQLException {
@@ -26,6 +28,23 @@ public class UrlRepository extends BaseRepository {
             }
 
         }
+    }
+
+    public static boolean findMatchesByName(String name) throws SQLException {
+        var sql = "SELECT * FROM urls WHERE name = ?";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            var resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                var so = resultSet.getString("name");
+                if (so.equals(name)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+
     }
 
     public static List<Url> getEntities() throws SQLException {
