@@ -3,6 +3,7 @@
 @param UrlsPage page
 
 @template.layout.page(
+    page = page,
     content = @`
 <div>
     <ul>
