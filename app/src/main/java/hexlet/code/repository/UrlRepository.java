@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 public class UrlRepository extends BaseRepository {
     public static void save(Url url) throws SQLException {
@@ -26,6 +27,24 @@ public class UrlRepository extends BaseRepository {
                 throw new SQLException("ID ERROR");
             }
 
+        }
+    }
+    public static Optional<Url> find(int id) throws SQLException {
+        var sql = "SELECT * FROM urls WHERE id = ?";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            var resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                var name = resultSet.getString("name");
+                var createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
+
+                var url = new Url(name);
+                url.setId(id);
+                url.setCreatedAt(createdAt);
+                return Optional.of(url);
+            }
+            return Optional.empty();
         }
     }
 

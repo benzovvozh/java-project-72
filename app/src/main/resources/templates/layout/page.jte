@@ -21,5 +21,10 @@
     <p>${page.getFlash()}</p>
 @endif
 ${content}
+<footer>
+    <div>
+        created  by <a href="https://github.com/benzovvozh">Vladimir Shumkov</a>
+    </div>
+</footer>
 </body>
 </html>

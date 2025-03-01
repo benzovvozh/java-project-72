@@ -8,7 +8,7 @@
 <div>
     <ul>
         @for(var value: page.getUrls())
-            <li>${value.getName()}</li>
+            <li><a href="${NamedRoutes.idUrlPath(value.getId())}">${value.getName()}</a></li>
         @endfor
     </ul>
 </div>

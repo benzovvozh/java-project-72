@@ -1,10 +1,12 @@
 package hexlet.code.controller;
 
+import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
 import hexlet.code.model.Url;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.http.Context;
+import io.javalin.http.NotFoundResponse;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -26,7 +28,9 @@ public class RootController {
             var port = url.getPort();
             var host = url.getHost();
             String stringBuilder = new StringBuilder(protocol)
-                    .append("://").append(host).append((port == -1) ? "" : ":" + port).toString();
+                    .append("://").append(host)
+                    .append((port == -1) ? "" : ":" + port)
+                    .toString();
             Url result = new Url(stringBuilder);
             if (!UrlRepository.findMatchesByName(stringBuilder)) {
                 ctx.sessionAttribute("flash", "Страница уже существует");
@@ -40,8 +44,10 @@ public class RootController {
             ctx.sessionAttribute("flash", "Некорректный Url");
             throw new RuntimeException("Некорректный URL");
         } catch (URISyntaxException e) {
+            ctx.sessionAttribute("flash", "Некорректный Url");
             throw new RuntimeException("Некорректный URL");
         } catch (SQLException e) {
+            ctx.sessionAttribute("flash", "Некорректный Url");
             throw new RuntimeException("Чето со временем");
         }
     }
@@ -52,4 +58,13 @@ public class RootController {
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("urls.jte", model("page", page));
     }
+    public static void show(Context ctx) throws SQLException {
+        var id = ctx.pathParamAsClass("id", int.class).get();
+        var car = UrlRepository.find(id)
+                .orElseThrow(() -> new NotFoundResponse("URL with id = " + id + " not found"));
+        var page = new UrlPage(car);
+        ctx.render("url.jte", model("page", page));
+    }
+
+
 }

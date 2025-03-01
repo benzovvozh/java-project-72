@@ -9,7 +9,7 @@ public class NamedRoutes {
         return "/urls";
     }
 
-    public static String idUrlPath(Long id) {
+    public static String idUrlPath(int id) {
         return idUrlPath(String.valueOf(id));
     }
 
