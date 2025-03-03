@@ -1,5 +1,6 @@
 @import gg.jte.Content
 @import hexlet.code.dto.BasePage
+@import hexlet.code.util.NamedRoutes
 @param BasePage page = null
 @param Content content
 
@@ -17,6 +18,7 @@
           crossorigin="anonymous">
 </head>
 <body>
+<a href="${NamedRoutes.urlsPath()}">Список сайтов</a>
 @if(page != null && page.getFlash() != null)
     <p>${page.getFlash()}</p>
 @endif

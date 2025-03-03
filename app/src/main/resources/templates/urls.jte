@@ -5,6 +5,7 @@
 @template.layout.page(
     page = page,
     content = @`
+    <h1>Список сайтов</h1>
 <div>
     <ul>
         @for(var value: page.getUrls())
