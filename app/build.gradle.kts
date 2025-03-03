@@ -26,6 +26,7 @@ dependencies {
     implementation("gg.jte:jte:3.1.9")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.0-rc1")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0-rc1")
+    implementation("com.konghq:unirest-java-bom:4.4.5")
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.assertj:assertj-core:3.25.3")
     testImplementation("org.junit.jupiter:junit-jupiter")

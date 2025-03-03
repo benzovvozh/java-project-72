@@ -60,9 +60,9 @@ public class RootController {
     }
     public static void show(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", int.class).get();
-        var car = UrlRepository.find(id)
+        var url = UrlRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("URL with id = " + id + " not found"));
-        var page = new UrlPage(car);
+        var page = new UrlPage(url);
         ctx.render("url.jte", model("page", page));
     }
 

@@ -17,16 +17,39 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
 </head>
-<body>
-<a href="${NamedRoutes.urlsPath()}">Список сайтов</a>
+<body class="d-flex flex-column min-vh-100">
+
+
+<header class="p-3 text-bg-dark">
+    <div class="container">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi me-2" width="40" height="32">
+                <use xlink:href="#bootstrap"></use>
+            </svg>
+        </a>
+
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="${NamedRoutes.mainPath()}" class="nav-link active"
+                                    aria-current="page">Главная</a></li>
+            <li class="nav-item"><a href="${NamedRoutes.urlsPath()}" class="nav-link active" aria-current="page">Список
+                    сайтов</a></li>
+        </ul>
+    </div>
+</header>
+
+
 @if(page != null && page.getFlash() != null)
-    <p>${page.getFlash()}</p>
+    <div class="rounded-0 m-0 alert alert-dismissible fade show alert-success">
+        <p>${page.getFlash()}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 @endif
 ${content}
-<footer>
-    <div>
-        created  by <a href="https://github.com/benzovvozh">Vladimir Shumkov</a>
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="container">
+        <p class="text-center text-body-secondary">Created by <a href="https://github.com/benzovvozh">Vladimir Shumkov</a></p>
     </div>
+
 </footer>
 </body>
 </html>

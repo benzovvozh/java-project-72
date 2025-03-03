@@ -10,8 +10,9 @@
                     Введите адрес сайта
                     <input type="text" class="form-control" name="url" />
                 </label>
+                <button type="submit" class="h-100 btn btn-lg btn-primary px-sm-5">Проверить</button>
             </div>
-            <input type="submit" class="btn btn-primary" value="Сохранить" />
+
         </form>
     </div>
 `

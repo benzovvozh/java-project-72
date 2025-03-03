@@ -3,18 +3,34 @@
 @param UrlsPage page
 
 @template.layout.page(
-    page = page,
-    content = @`
+page = page,
+content = @`
     <h1>Список сайтов</h1>
-<div>
-    <ul>
-        @for(var value: page.getUrls())
-            <li><a href="${NamedRoutes.idUrlPath(value.getId())}">${value.getName()}</a></li>
-        @endfor
-    </ul>
-</div>
     <div>
-        <a href="${NamedRoutes.mainPath()}">Вернуться на главную страницу</a>
+        <table class="table table-bordered table-hover mt-3">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Имя</th>
+                <th>Последняя проверка</th>
+                <th>Код ответа</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for(var value: page.getUrls())
+                <tr>
+                <td>${value.getId()}</td>
+                <td>
+                    <a href="${NamedRoutes.idUrlPath(value.getId())}">${value.getName()}</a>
+                </td>
+                <td>${value.getCreatedAtFormatted()}</td>
+                <td></td>
+                </tr>
+            @endfor
+            </tbody>
+
+        </table>
     </div>
+
 `
 )
