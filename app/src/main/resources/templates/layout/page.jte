@@ -45,11 +45,13 @@
     </div>
 @endif
 ${content}
-<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-    <div class="container">
-        <p class="text-center text-body-secondary">Created by <a href="https://github.com/benzovvozh">Vladimir Shumkov</a></p>
+<footer class="footer border-top py-3 mt-5 bg-light">
+    <div class="container-xl">
+        <div class="text-center">
+            created by
+            <a href="https://github.com/benzovvozh" target="_blank">Vladimir Shumkov</a>
+        </div>
     </div>
-
 </footer>
 </body>
 </html>

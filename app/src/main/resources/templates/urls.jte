@@ -1,4 +1,5 @@
 @import hexlet.code.dto.UrlsPage
+@import hexlet.code.repository.UrlCheckRepository
 @import hexlet.code.util.NamedRoutes
 @param UrlsPage page
 
@@ -6,7 +7,7 @@
 page = page,
 content = @`
     <h1>Список сайтов</h1>
-    <div>
+    <div class="container-lg mt-5">
         <table class="table table-bordered table-hover mt-3">
             <thead>
             <tr>
@@ -23,8 +24,8 @@ content = @`
                 <td>
                     <a href="${NamedRoutes.idUrlPath(value.getId())}">${value.getName()}</a>
                 </td>
-                <td>${value.getCreatedAtFormatted()}</td>
-                <td></td>
+                <td>${UrlCheckRepository.getLastCheckTime(value.getId())}</td>
+                <td>${UrlCheckRepository.getLastCheckStatusCode(value.getId())}</td>
                 </tr>
             @endfor
             </tbody>
