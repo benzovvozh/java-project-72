@@ -73,9 +73,11 @@ public class RootController {
             var jsonResponse = response.getBody();
             Document doc = Jsoup.parse(jsonResponse);
             String title = doc.title();
-            String h1 = doc.select("h1").first().text();
-            if (h1.equals("null")) {
-                h1 = "";
+//            String h1 = doc.select("h1").first().text();
+            String h1 = "";
+            var element = doc.select("h1").first();
+            if (element != null) {
+                h1 = element.text();
             }
             String desc = doc.select("meta[name=description]").attr("content");
             // создаем объект urlCheck
