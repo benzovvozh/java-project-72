@@ -1,7 +1,11 @@
 @import hexlet.code.util.NamedRoutes
+@import hexlet.code.dto.BasePage
+@param BasePage page
+
 
 
 @template.layout.page(
+page = page,
 content = @`
     <div class="mx-auto p-4 py-md-5">
         <form action="${NamedRoutes.urlsPath()}" method="post">

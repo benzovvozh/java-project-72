@@ -73,6 +73,17 @@ public class UrlCheckRepository {
         }
     }
 
+    public static UrlCheck getLastCheck(int id) {
+        try {
+            var list = getEntities(id);
+            return list.getLast();
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка getLastCheck");
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+
     public static String getLastCheckTime(int id) {
         try {
             var list = getEntities(id);
