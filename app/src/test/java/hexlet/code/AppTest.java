@@ -27,8 +27,7 @@ public class AppTest {
     @BeforeAll
     public static void setServer() throws Exception {
         mockWebServer = new MockWebServer();
-        mockWebServer.enqueue(new MockResponse()
-                .setBody(App.readResourceFile("exampleHTML.html")));
+
     }
 
     @AfterAll
@@ -44,6 +43,8 @@ public class AppTest {
     @Test
     public void checkUrlTest2() throws SQLException, IOException {
         mockWebServer.start();
+        mockWebServer.enqueue(new MockResponse()
+                .setBody(App.readResourceFile("exampleHTML.html")));
         baseUrl = mockWebServer.url("/").toString();
         var url = new Url(baseUrl);
         UrlRepository.save(url);
@@ -58,6 +59,16 @@ public class AppTest {
             assertThat(urlCheck.getTitle()).isEqualTo("Example html");
             assertThat(urlCheck.getH1()).isEqualTo("Hello world!");
             assertThat(urlCheck.getDescription()).isEqualTo("This is example");
+        });
+
+    }
+
+    @Test
+    public void addUrlTest() throws IOException {
+        mockWebServer.start();
+        mockWebServer.enqueue(new MockResponse().setBody(""));
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.post(NamedRoutes.urlsPath());
         });
 
     }

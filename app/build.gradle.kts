@@ -25,8 +25,6 @@ dependencies {
     implementation("io.javalin:javalin-rendering:6.1.3")
     implementation("gg.jte:jte:3.1.9")
     implementation("org.jsoup:jsoup:1.17.2")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.0-rc1")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0-rc1")
     implementation("com.konghq:unirest-java:3.14.5")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation(platform("org.junit:junit-bom:5.9.1"))

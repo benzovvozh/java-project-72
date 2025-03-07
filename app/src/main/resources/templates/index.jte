@@ -1,6 +1,6 @@
+@import hexlet.code.dto.BuildBasePage
 @import hexlet.code.util.NamedRoutes
-@import hexlet.code.dto.BasePage
-@param BasePage page
+@param BuildBasePage page
 
 
 
