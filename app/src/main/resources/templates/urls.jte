@@ -1,5 +1,6 @@
 @import hexlet.code.dto.UrlsPage
 @import hexlet.code.repository.UrlCheckRepository
+@import hexlet.code.util.DateFormat
 @import hexlet.code.util.NamedRoutes
 @param UrlsPage page
 
@@ -24,8 +25,10 @@ content = @`
                 <td>
                     <a href="${NamedRoutes.idUrlPath(value.getId())}">${value.getName()}</a>
                 </td>
-                <td>${UrlCheckRepository.getLastCheckTime(value.getId())}</td>
+                <td>${UrlCheckRepository.getLastCheckTime(value.getId()) == null ? null
+: DateFormat.dateFormater(UrlCheckRepository.getLastCheckTime(value.getId()))}</td>
                 <td>${UrlCheckRepository.getLastCheckStatusCode(value.getId())}</td>
+                    
                 </tr>
             @endfor
             </tbody>

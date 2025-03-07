@@ -3,7 +3,6 @@ package hexlet.code.repository;
 import hexlet.code.model.Url;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,21 +18,22 @@ public class UrlRepository extends BaseRepository {
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, url.getName());
             var currentDate = LocalDateTime.now();
-            var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            var formattedDate = currentDate.format(formatter);
+
+
             preparedStatement.setTimestamp(2, Timestamp.valueOf(currentDate));
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 url.setId(generatedKeys.getInt(1));
                 url.setCreatedAt(currentDate);
-                url.setCreatedAtFormatted(formattedDate);
+
             } else {
                 throw new SQLException("ID ERROR");
             }
 
         }
     }
+
     public static Optional<Url> find(int id) throws SQLException {
         var sql = "SELECT * FROM urls WHERE id = ?";
         try (var conn = dataSource.getConnection();
@@ -43,11 +43,11 @@ public class UrlRepository extends BaseRepository {
             if (resultSet.next()) {
                 var name = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
-                var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                var formattedDate = createdAt.format(formatter);
+
+
                 var url = new Url(name);
                 url.setId(id);
-                url.setCreatedAtFormatted(formattedDate);
+
                 return Optional.of(url);
             }
             return Optional.empty();

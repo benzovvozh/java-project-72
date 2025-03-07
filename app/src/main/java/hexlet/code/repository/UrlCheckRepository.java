@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -61,11 +60,11 @@ public class UrlCheckRepository {
                 var desc = resultSet.getString("description");
                 var createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
                 var urlCheck = new UrlCheck(urlId, statusCode, title, h1, desc);
-                var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                var formattedDate = createdAt.format(formatter);
+
+
                 urlCheck.setId(urlCheckId);
                 urlCheck.setCreatedAt(createdAt);
-                urlCheck.setCreatedAtFormatted(formattedDate);
+
                 result.add(urlCheck);
             }
 
@@ -84,10 +83,10 @@ public class UrlCheckRepository {
         }
     }
 
-    public static String getLastCheckTime(int id) {
+    public static LocalDateTime  getLastCheckTime(int id) {
         try {
             var list = getEntities(id);
-            return list.getLast().getCreatedAtFormatted();
+            return list.getLast().getCreatedAt();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (NoSuchElementException e) {

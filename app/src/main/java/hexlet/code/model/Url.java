@@ -13,7 +13,7 @@ public class Url {
     private int id;
     private String name;
     private LocalDateTime createdAt;
-    private String createdAtFormatted;
+
     public Url(String name) {
         this.name = name;
     }
