@@ -31,7 +31,7 @@ content = @`
                 <td>${UrlCheckRepository.getLastCheckTime(value.getId()) == null ? null
                        : DateFormat.dateFormater(UrlCheckRepository.getLastCheckTime(value.getId()))}</td>
                     <!-- Последний статус-код -->
-                <<td>${UrlCheckRepository.getLastCheckStatusCode(value.getId()) == null ? null
+                <td>${UrlCheckRepository.getLastCheckStatusCode(value.getId()) == null ? null
        : UrlCheckRepository.getLastCheckStatusCode(value.getId())}</td>
                     
                 </tr>
