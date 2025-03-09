@@ -81,8 +81,10 @@ public class UrlCheckRepository {
             stmt.setInt(1, id);
             var resultSet = stmt.executeQuery();
             while (resultSet.next()) {
-                result = resultSet.getTimestamp("created_at").toLocalDateTime();
-
+                Timestamp timestamp = resultSet.getTimestamp("created_at");
+                if (timestamp != null) {
+                    result = timestamp.toLocalDateTime();
+                }
             }
             return result;
         } catch (SQLException e) {
