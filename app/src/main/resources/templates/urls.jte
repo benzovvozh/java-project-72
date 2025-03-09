@@ -29,9 +29,10 @@ content = @`
                 </td>
                     <!-- Последняя проверка -->
                 <td>${UrlCheckRepository.getLastCheckTime(value.getId()) == null ? null
-: DateFormat.dateFormater(UrlCheckRepository.getLastCheckTime(value.getId()))}</td>
+                       : DateFormat.dateFormater(UrlCheckRepository.getLastCheckTime(value.getId()))}</td>
                     <!-- Последний статус-код -->
-                <td>${UrlCheckRepository.getLastCheckStatusCode(value.getId())}</td>
+                <<td>${UrlCheckRepository.getLastCheckStatusCode(value.getId()) == null ? null
+       : UrlCheckRepository.getLastCheckStatusCode(value.getId())}</td>
                     
                 </tr>
             @endfor
