@@ -21,12 +21,16 @@ content = @`
             <tbody>
             @for(var value: page.getUrls())
                 <tr>
+                    <!-- ID -->
                 <td>${value.getId()}</td>
+                    <!-- Ссылка и название -->
                 <td>
                     <a href="${NamedRoutes.idUrlPath(value.getId())}">${value.getName()}</a>
                 </td>
+                    <!-- Последняя проверка -->
                 <td>${UrlCheckRepository.getLastCheckTime(value.getId()) == null ? null
 : DateFormat.dateFormater(UrlCheckRepository.getLastCheckTime(value.getId()))}</td>
+                    <!-- Последний статус-код -->
                 <td>${UrlCheckRepository.getLastCheckStatusCode(value.getId())}</td>
                     
                 </tr>

@@ -64,14 +64,16 @@ public class AppTest {
     }
 
     @Test
-    public void addUrlTest() throws IOException {
-        mockWebServer.start();
-        mockWebServer.enqueue(new MockResponse().setBody(""));
+    public void postAddCheck() {
         JavalinTest.test(app, (server, client) -> {
-            var response = client.post(NamedRoutes.urlsPath());
-        });
+            var response = client.post(NamedRoutes.urlsPath(), "url=https://www.youtube.com");
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains("https://www.youtube.com");
+            assertThat(UrlRepository.findMatchesByName("https://www.youtube.com")).isEqualTo(false);
 
+        });
     }
+
 
     @Test
     public void testMainPage() {

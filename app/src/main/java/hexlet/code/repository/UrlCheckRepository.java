@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static hexlet.code.repository.BaseRepository.dataSource;
 
@@ -72,36 +71,40 @@ public class UrlCheckRepository {
         }
     }
 
-    public static UrlCheck getLastCheck(int id) {
-        try {
-            var list = getEntities(id);
-            return list.getLast();
-        } catch (SQLException e) {
-            throw new RuntimeException("Ошибка getLastCheck");
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
+    public static LocalDateTime getLastCheckTime(int id) {
+        String sql = "SELECT DISTINCT ON (url_id) created_at "
+                + "FROM url_checks WHERE url_id = ?"
+                + " ORDER BY created_at DESC";
+        LocalDateTime result = null;
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            var resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                result = resultSet.getTimestamp("created_at").toLocalDateTime();
 
-    public static LocalDateTime  getLastCheckTime(int id) {
-        try {
-            var list = getEntities(id);
-            return list.getLast().getCreatedAt();
+            }
+            return result;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchElementException e) {
-            return null;
+            throw new RuntimeException("getLastTimeCheck error");
         }
     }
 
     public static String getLastCheckStatusCode(int id) {
-        try {
-            var list = getEntities(id);
-            return String.valueOf(list.getLast().getStatusCode());
+        String sql = "SELECT DISTINCT ON (url_id) statusCode "
+                + "FROM url_checks WHERE url_id = ?"
+                + "ORDER BY statusCode DESC";
+        String result = null;
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            var resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                result = resultSet.getString("statusCode");
+            }
+            return result;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchElementException e) {
-            return null;
+            throw new RuntimeException("getLastCheckStatusCode error");
         }
     }
 }

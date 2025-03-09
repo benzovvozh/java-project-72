@@ -18,15 +18,12 @@ public class UrlRepository extends BaseRepository {
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, url.getName());
             var currentDate = LocalDateTime.now();
-
-
             preparedStatement.setTimestamp(2, Timestamp.valueOf(currentDate));
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 url.setId(generatedKeys.getInt(1));
                 url.setCreatedAt(currentDate);
-
             } else {
                 throw new SQLException("ID ERROR");
             }
@@ -47,6 +44,7 @@ public class UrlRepository extends BaseRepository {
 
                 var url = new Url(name);
                 url.setId(id);
+                url.setCreatedAt(createdAt);
 
                 return Optional.of(url);
             }

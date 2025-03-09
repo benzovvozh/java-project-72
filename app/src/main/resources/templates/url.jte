@@ -1,7 +1,6 @@
 @import hexlet.code.dto.UrlPage
 @import hexlet.code.util.DateFormat
 @import hexlet.code.util.NamedRoutes
-@import java.time.format.DateTimeFormatter
 @param UrlPage page
 
 @template.layout.page(

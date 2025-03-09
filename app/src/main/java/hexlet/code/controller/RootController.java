@@ -1,6 +1,5 @@
 package hexlet.code.controller;
 
-import hexlet.code.dto.BasePage;
 import hexlet.code.dto.BuildBasePage;
 import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
@@ -20,8 +19,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
@@ -99,7 +96,7 @@ public class RootController {
             UrlCheckRepository.save(urlCheck);
             ctx.sessionAttribute("flash", "Проверка успешно добавлена");
             ctx.redirect(NamedRoutes.idUrlPath(id));
-        } catch (Exception e ){
+        } catch (Exception e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.redirect(NamedRoutes.idUrlPath(id));
         }
@@ -108,13 +105,7 @@ public class RootController {
 
     public static void showURLS(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
-        List<UrlCheck> urlCheckList = new ArrayList<>();
-        for (var url : urls) {
-            var urlId = url.getId();
-            var urlCheck = UrlCheckRepository.getEntities(urlId);
-            urlCheckList.addAll(urlCheck);
-        }
-        var page = new UrlsPage(urls, urlCheckList);
+        var page = new UrlsPage(urls);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("urls.jte", model("page", page));
     }

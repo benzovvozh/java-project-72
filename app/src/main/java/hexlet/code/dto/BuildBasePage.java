@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuildBasePage extends BasePage{
+public class BuildBasePage extends BasePage {
     String name;
 }
