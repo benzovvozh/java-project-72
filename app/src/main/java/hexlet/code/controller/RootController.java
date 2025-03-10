@@ -52,18 +52,15 @@ public class RootController {
                 ctx.redirect(NamedRoutes.urlsPath());
             }
 
-        } catch (MalformedURLException | ValidationException e) {
+        } catch (MalformedURLException | ValidationException | IllegalArgumentException | URISyntaxException e) {
 
             var page = new BuildBasePage(url1);
 
             ctx.sessionAttribute("flash", "Некорректный URL");
             page.setFlash(ctx.consumeSessionAttribute("flash"));
             ctx.render("index.jte", model("page", page));
-        } catch (URISyntaxException e) {
-            ctx.sessionAttribute("flash", "Некорректный URL");
-            ctx.redirect(NamedRoutes.mainPath());
-            throw new RuntimeException(e);
         }
+
     }
 
     public static void check(Context ctx) throws SQLException {
