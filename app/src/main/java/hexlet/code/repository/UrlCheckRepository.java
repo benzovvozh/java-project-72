@@ -71,10 +71,10 @@ public class UrlCheckRepository {
         }
     }
 
-    public static LocalDateTime getLastCheckTime(int id) {
-        String sql = "SELECT DISTINCT ON (url_id) created_at "
+    public static LocalDateTime getLastCheckTime(int id) throws SQLException {
+        String sql = "SELECT DISTINCT ON (url_id) url_id, created_at "
                 + "FROM url_checks WHERE url_id = ?"
-                + " ORDER BY created_at DESC";
+                + " ORDER BY url_id, created_at DESC";
         LocalDateTime result = null;
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
@@ -87,15 +87,15 @@ public class UrlCheckRepository {
                 }
             }
             return result;
-        } catch (SQLException e) {
-            return null;
+        } catch (SQLException e){
+            throw e;
         }
     }
 
-    public static String getLastCheckStatusCode(int id) {
-        String sql = "SELECT DISTINCT ON (url_id) status_code "
+    public static String getLastCheckStatusCode(int id) throws SQLException {
+        String sql = "SELECT DISTINCT ON (url_id) url_id, status_code "
                 + "FROM url_checks WHERE url_id = ?"
-                + "ORDER BY status_code DESC";
+                + "ORDER BY url_id, status_code DESC";
         String result = null;
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
@@ -106,7 +106,7 @@ public class UrlCheckRepository {
             }
             return result;
         } catch (SQLException e) {
-            return null;
+            throw e;
         }
     }
 }
