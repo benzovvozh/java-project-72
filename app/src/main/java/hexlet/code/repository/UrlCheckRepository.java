@@ -1,12 +1,14 @@
 package hexlet.code.repository;
 
 import hexlet.code.model.UrlCheck;
+import hexlet.code.model.UrlCheckInfo;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static hexlet.code.repository.BaseRepository.dataSource;
@@ -71,42 +73,44 @@ public class UrlCheckRepository {
         }
     }
 
-    public static LocalDateTime getLastCheckTime(int id) throws SQLException {
-        String sql = "SELECT DISTINCT ON (url_id) url_id, created_at "
-                + "FROM url_checks WHERE url_id = ?"
+    public static HashMap<Integer, UrlCheckInfo> getLastCheckInfo() {
+        String sql = "SELECT DISTINCT ON (url_id) url_id, created_at, status_code"
+                + " FROM url_checks"
                 + " ORDER BY url_id, created_at DESC";
-        LocalDateTime result = null;
+        var map = new HashMap<Integer, UrlCheckInfo>();
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
             var resultSet = stmt.executeQuery();
             while (resultSet.next()) {
-                Timestamp timestamp = resultSet.getTimestamp("created_at");
-                if (timestamp != null) {
-                    result = timestamp.toLocalDateTime();
-                }
+                var urlId = resultSet.getInt("url_id");
+                LocalDateTime time = resultSet.getTimestamp("created_at").toLocalDateTime();
+                var statusCode = resultSet.getInt("status_code");
+                var checkInfo = new UrlCheckInfo(time, statusCode);
+                map.put(urlId, checkInfo);
+
             }
-            return result;
-        } catch (SQLException e){
-            throw e;
+            return map;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("asd");
         }
     }
 
-    public static String getLastCheckStatusCode(int id) throws SQLException {
-        String sql = "SELECT DISTINCT ON (url_id) url_id, status_code "
-                + "FROM url_checks WHERE url_id = ?"
-                + "ORDER BY url_id, status_code DESC";
-        String result = null;
-        try (var conn = dataSource.getConnection();
-             var stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            var resultSet = stmt.executeQuery();
-            while (resultSet.next()) {
-                result = resultSet.getString("status_code");
-            }
-            return result;
-        } catch (SQLException e) {
-            throw e;
+    public static LocalDateTime getLastTime(HashMap<Integer, UrlCheckInfo> checkInfo, int id) {
+        var urlCheckInfo = checkInfo.get(id);
+        if (urlCheckInfo == null) {
+            return null;
         }
+        return urlCheckInfo.getLastTime();
     }
+
+    public static Integer getLastStatusCode(HashMap<Integer, UrlCheckInfo> checkInfo, int id) {
+        var urlCheckInfo = checkInfo.get(id);
+        if (urlCheckInfo == null) {
+            return null;
+        }
+        return urlCheckInfo.getStatusCode();
+    }
+
 }
+

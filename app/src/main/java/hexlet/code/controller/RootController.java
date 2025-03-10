@@ -105,7 +105,8 @@ public class RootController {
 
     public static void showURLS(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
-        var page = new UrlsPage(urls);
+        var urlsChecks = UrlCheckRepository.getLastCheckInfo();
+        var page = new UrlsPage(urls, urlsChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("urls.jte", model("page", page));
     }

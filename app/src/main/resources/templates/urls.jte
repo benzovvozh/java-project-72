@@ -28,11 +28,9 @@ content = @`
                     <a href="${NamedRoutes.idUrlPath(value.getId())}">${value.getName()}</a>
                 </td>
                     <!-- Последняя проверка -->
-                <td>${(UrlCheckRepository.getLastCheckTime(value.getId())) == null ? ""
-               : DateFormat.dateFormater(UrlCheckRepository.getLastCheckTime(value.getId()))}</td>
+                <td>${DateFormat.dateFormater(UrlCheckRepository.getLastTime(UrlCheckRepository.getLastCheckInfo(), value.getId()))}</td>
                     <!-- Последний статус-код -->
-                <td>${UrlCheckRepository.getLastCheckStatusCode(value.getId()) == null ? ""
-       : UrlCheckRepository.getLastCheckStatusCode(value.getId())}</td>
+                <td>${UrlCheckRepository.getLastStatusCode(UrlCheckRepository.getLastCheckInfo(), value.getId())}</td>
                     
                 </tr>
             @endfor
