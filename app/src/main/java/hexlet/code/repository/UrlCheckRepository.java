@@ -88,7 +88,7 @@ public class UrlCheckRepository {
             }
             return result;
         } catch (SQLException e) {
-            throw new RuntimeException("getLastTimeCheck error");
+            return null;
         }
     }
 
