@@ -28,4 +28,13 @@ public class UrlCheck {
         this.description = description;
         this.statusCode = statusCode;
     }
+
+    public UrlCheck(int urlId, int statusCode, String title, String h1, String description, LocalDateTime createdAt) {
+        this.urlId = urlId;
+        this.h1 = h1;
+        this.title = title;
+        this.description = description;
+        this.statusCode = statusCode;
+        this.createdAt = createdAt;
+    }
 }

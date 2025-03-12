@@ -1,7 +1,6 @@
 package hexlet.code.repository;
 
 import hexlet.code.model.UrlCheck;
-import hexlet.code.model.UrlCheckInfo;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -61,23 +60,19 @@ public class UrlCheckRepository {
                 var desc = resultSet.getString("description");
                 var createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
                 var urlCheck = new UrlCheck(urlId, statusCode, title, h1, desc);
-
-
                 urlCheck.setId(urlCheckId);
                 urlCheck.setCreatedAt(createdAt);
-
                 result.add(urlCheck);
             }
-
             return result;
         }
     }
 
-    public static HashMap<Integer, UrlCheckInfo> getLastCheckInfo() {
-        String sql = "SELECT DISTINCT ON (url_id) url_id, created_at, status_code"
+    public static HashMap<Integer, UrlCheck> getLastCheckInfo() {
+        String sql = "SELECT DISTINCT ON (url_id) *"
                 + " FROM url_checks"
                 + " ORDER BY url_id, created_at DESC";
-        var map = new HashMap<Integer, UrlCheckInfo>();
+        var map = new HashMap<Integer, UrlCheck>();
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
             var resultSet = stmt.executeQuery();
@@ -85,32 +80,16 @@ public class UrlCheckRepository {
                 var urlId = resultSet.getInt("url_id");
                 LocalDateTime time = resultSet.getTimestamp("created_at").toLocalDateTime();
                 var statusCode = resultSet.getInt("status_code");
-                var checkInfo = new UrlCheckInfo(time, statusCode);
-                map.put(urlId, checkInfo);
-
+                var title = resultSet.getString("title");
+                var description = resultSet.getString("description");
+                var h1 = resultSet.getString("h1");
+                var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description, time);
+                map.put(urlId, urlCheck);
             }
             return map;
-
         } catch (SQLException e) {
             throw new RuntimeException("asd");
         }
     }
-
-    public static LocalDateTime getLastTime(HashMap<Integer, UrlCheckInfo> checkInfo, int id) {
-        var urlCheckInfo = checkInfo.get(id);
-        if (urlCheckInfo == null) {
-            return null;
-        }
-        return urlCheckInfo.getLastTime();
-    }
-
-    public static Integer getLastStatusCode(HashMap<Integer, UrlCheckInfo> checkInfo, int id) {
-        var urlCheckInfo = checkInfo.get(id);
-        if (urlCheckInfo == null) {
-            return null;
-        }
-        return urlCheckInfo.getStatusCode();
-    }
-
 }
 
