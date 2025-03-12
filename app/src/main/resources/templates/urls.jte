@@ -27,7 +27,7 @@ content = @`
                     <a href="${NamedRoutes.idUrlPath(value.getId())}">${value.getName()}</a>
                 </td>
                     <!-- Последняя проверка -->
-                <td>${page.getUrlChecks().isEmpty() ? "  " :
+                <td>${page.getUrlChecks().isEmpty() ? null :
                         DateFormat.dateFormater(page.getUrlChecks().get(value.getId()).getCreatedAt())}</td>
                     <!-- Последний статус-код -->
                 <td>${page.getUrlChecks().isEmpty() ? null :

@@ -18,7 +18,6 @@ public class UrlCheck {
     private String title;
     private String h1;
     private String description;
-
     private LocalDateTime createdAt;
 
     public UrlCheck(int urlId, int statusCode, String title, String h1, String description) {
